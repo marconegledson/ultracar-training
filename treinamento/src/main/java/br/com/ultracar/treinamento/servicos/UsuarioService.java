@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.ultracar.treinamento.entidades.Menu;
 import br.com.ultracar.treinamento.entidades.Usuario;
 import br.com.ultracar.treinamento.repositorios.UsuarioRepository;
 
@@ -47,6 +48,8 @@ public class UsuarioService {
 		this.repositorio.UpdateUser(user);
 	}
 	
-	
+	public List<Menu> findAllMenuByUserId(Long idUsuario){
+		return this.repositorio.findAllMenuByUserId(idUsuario);
+	}
 	
 }

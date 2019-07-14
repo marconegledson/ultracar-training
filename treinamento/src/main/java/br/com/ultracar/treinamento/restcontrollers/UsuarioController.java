@@ -1,6 +1,7 @@
 package br.com.ultracar.treinamento.restcontrollers;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.ultracar.treinamento.entidades.Menu;
 import br.com.ultracar.treinamento.entidades.Usuario;
 import br.com.ultracar.treinamento.servicos.UsuarioNewService;
 import br.com.ultracar.treinamento.servicos.UsuarioService;
@@ -28,9 +30,12 @@ public class UsuarioController {
 	
 	private UsuarioNewService serviceDelete;
 
-	public ResponseEntity<?> restGet(@PathVariable(name = "id",required = true) Long idUsuario){
+	public ResponseEntity<?> restGet(@PathVariable(name = "id",required = true) Long idUsuario){	
 		Usuario usuario = service.findOne(idUsuario);
-		return new ResponseEntity<>(usuario, HttpStatus.OK);
+		if(Objects.nonNull(usuario)) {
+			return new ResponseEntity<>(usuario, HttpStatus.OK);
+		}
+		return new ResponseEntity<>(usuario, HttpStatus.NOT_FOUND);
 	}
 	
 	@GetMapping
@@ -49,5 +54,12 @@ public class UsuarioController {
 	public void restUpdate(@PathVariable("id") Long id, @RequestBody Usuario usuario) {
 		service.updateUser(usuario);
 	}
+	
+	@GetMapping(value = "/{id}")
+	@ResponseStatus(HttpStatus.OK)
+	public List<Menu> restGetAllMenuByUserId(@PathVariable("id") Long id){
+		return this.service.findAllMenuByUserId(id);
+	}
+	
 	
 }

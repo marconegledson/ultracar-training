@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
+import br.com.ultracar.treinamento.entidades.Menu;
 import br.com.ultracar.treinamento.entidades.Operacao;
 import br.com.ultracar.treinamento.entidades.Usuario;
 
@@ -36,5 +37,12 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 	@Modifying
 	@Query("Update Usuario usr Set Where usu = :usuario")
 	public void UpdateUser(Usuario usuario);
+	
+	@Query("Select m "
+			+ "from Usuario usu "
+			+ "Left Join Fetch usu.permissoesDeAcesso "
+			+ "permissao Left Join Fetch permissao.menus m "
+			+ "Where usu.id = :id")
+	public List<Menu> findAllMenuByUserId(Long id);
 
 }
